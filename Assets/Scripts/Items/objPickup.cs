@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class objPickup : MonoBehaviour
 {
-    public GameObject crosshair1, crosshair2, Table, objColete;
+    public GameObject crosshair1, crosshair2, objColete;
     public Transform objTransform, cameraTrans;
     public bool interactable, pickedup, positioned;
     public Rigidbody objRigidbody;
@@ -45,7 +45,7 @@ public class objPickup : MonoBehaviour
     }
     void Update()
     {
-        if (Vector3.Distance(objColete.transform.position, Table.transform.position)>= 5)
+        if (Vector3.Distance(objColete.transform.position, new Vector3(1.6f, 1.3f, -4.75f))>= 2)
         {
             positioned = false;
         }
@@ -59,10 +59,15 @@ public class objPickup : MonoBehaviour
             }
             if (Input.GetMouseButtonUp(0))
             {
-                if ((Vector3.Distance(objColete.transform.position, Table.transform.position)< 5) && (positioned == false))
+                if ((Vector3.Distance(objColete.transform.position, new Vector3(1.6f, 1.3f, -4.75f))< 2) && (positioned == false))
                 {
                     Debug.Log("Objeto proximo");
-                    objColete.transform.position = new Vector3(1, 2, 3);
+                    objColete.transform.position = new Vector3(1.6f, 1.3f, -4.75f);
+                    objColete.transform.eulerAngles = new Vector3(
+                        -20.0f,
+                        90.0f,
+                        0.0f
+                    );
                     objTransform.parent = null;
                     objRigidbody.useGravity = false;
                     objRigidbody.velocity = new Vector3(0,0,0);

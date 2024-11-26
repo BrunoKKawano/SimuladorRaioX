@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ObjectivesHandler : MonoBehaviour
 {
-    public GameObject objColete, Player, XRay;
+    public GameObject objColete, Player, XRay; 
+    public TMPro.TextMeshProUGUI TextoColete, TextoXRay, TextoSala;
     public bool boolColetePosicionado, boolPlayerPosicionado, boolXRayAtivado;
     public LayerMask layersToHit;
     private bool boolXRayLight;
@@ -21,7 +23,7 @@ public class ObjectivesHandler : MonoBehaviour
         ToggleLight LightState = GameObject.FindGameObjectWithTag("XRay").GetComponent<ToggleLight>();
         boolXRayLight = LightState.XRayState();
 
-        if (objColete.transform.position == new Vector3(1,1,1))
+        if (objColete.transform.position == new Vector3(1.6f, 1.3f, -4.75f))
         {
             boolColetePosicionado = true;
             Debug.Log("Colete posicionado");
@@ -35,11 +37,16 @@ public class ObjectivesHandler : MonoBehaviour
             else
             {
                 boolPlayerPosicionado = true;
+                TextoSala.text = "- "+"<s>"+"Entre na sala segura"+"</s>";
             }
         }
         if (boolXRayLight)
         {
             boolXRayAtivado = true;
+        }
+        if (boolXRayLight && !boolPlayerPosicionado)
+        {
+            Debug.Log("Failed");
         }
     }
 }
