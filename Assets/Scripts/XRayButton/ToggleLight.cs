@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.InputSystem;
 
 public class ToggleLight : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class ToggleLight : MonoBehaviour
     public DealDamage damageManager;
     public GameObject player;
     public LayerMask layersToHit;
+    public InputActionProperty XRayButton, LightButton;
 
     // Start is called before the first frame update
     void Start()
@@ -23,8 +26,7 @@ public class ToggleLight : MonoBehaviour
         SpotLight.SetActive(false);
         boolXRay = false;
         RoomLight.SetActive(true);
-        boolRoomLight = true;
-
+        boolRoomLight = true; 
     }
 
     // Update is called once per frame
@@ -32,7 +34,7 @@ public class ToggleLight : MonoBehaviour
     {
         var rayDirection = player.transform.position - XRayLight.transform.position;
         //If que controla se o raio X está ligado ou não
-        if(Input.GetKeyDown(KeyCode.E))
+        if(XRayButton.action.WasPressedThisFrame())
         {
             if(boolXRay == true)
             {
@@ -52,7 +54,7 @@ public class ToggleLight : MonoBehaviour
         }
 
         //If que controla se a visão é normal ou do raio X
-        if(Input.GetKeyDown(KeyCode.F))
+        if(LightButton.action.WasPressedThisFrame())
         {
             if(boolRoomLight == true)
             {
@@ -72,7 +74,6 @@ public class ToggleLight : MonoBehaviour
                 {
                     XRayLight.SetActive(false);
                     SpotLight.SetActive(false);
-                    boolXRay = false;
                 }
             }
         }

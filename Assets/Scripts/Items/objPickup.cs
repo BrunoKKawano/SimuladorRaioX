@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.InputSystem;
 
 public class objPickup : MonoBehaviour
 {
@@ -10,7 +12,7 @@ public class objPickup : MonoBehaviour
     public Rigidbody objRigidbody;
     public float throwAmount;
     private float flDistanceFromTable;
-
+    public InputActionProperty RightTrigger, LeftTrigger;
     void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("MainCamera"))
@@ -45,6 +47,28 @@ public class objPickup : MonoBehaviour
     }
     void Update()
     {
+        //Para VR
+        
+        if ((Vector3.Distance(objColete.transform.position, new Vector3(1.6f, 1.3f, -4.75f))< 2) && (positioned == false) && (!(RightTrigger.action.WasPressedThisFrame()) || !(LeftTrigger.action.WasPressedThisFrame())))
+        {
+            objColete.transform.position = new Vector3(1.6f, 1.3f, -4.75f);
+            objColete.transform.eulerAngles = new Vector3(
+                -20.0f,
+                90.0f,
+                0.0f
+            );
+            objTransform.parent = null;
+            objRigidbody.useGravity = false;
+            objRigidbody.velocity = new Vector3(0,0,0);
+            objRigidbody.angularVelocity = new Vector3(0,0,0);
+            pickedup = false;
+            positioned = true;
+        } else
+        {
+            positioned = false;
+        }
+        
+        //Para mouse
         if (Vector3.Distance(objColete.transform.position, new Vector3(1.6f, 1.3f, -4.75f))>= 2)
         {
             positioned = false;
