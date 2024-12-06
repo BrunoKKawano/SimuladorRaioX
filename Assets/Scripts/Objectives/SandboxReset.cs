@@ -14,7 +14,7 @@ public class SandboxReset : MonoBehaviour
     {
         if (ResetButton.action.WasPressedThisFrame())
         {
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("MainScene");
         }
     }
 }

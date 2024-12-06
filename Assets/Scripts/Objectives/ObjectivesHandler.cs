@@ -8,11 +8,11 @@ using UnityEngine.InputSystem;
 
 public class ObjectivesHandler : MonoBehaviour
 {
-    public GameObject objColete, Player, XRay, FailedCanva, HUDCanva, BemvindoCanva; 
+    public GameObject objColete, Player, XRay, FailedCanva, HUDCanva, BemvindoCanva, SucessoCanva; 
     public TMPro.TextMeshProUGUI TextoColete, TextoXRay, TextoSala;
     public bool boolColetePosicionado, boolPlayerPosicionado, boolXRayAtivado;
     public LayerMask layersToHit;
-    private bool boolXRayLight, boolFailed;
+    private bool boolXRayLight, boolFailed, boolSucesso;
     public InputActionProperty ResetButton;
 
     // Start is called before the first frame update
@@ -20,6 +20,7 @@ public class ObjectivesHandler : MonoBehaviour
     {
         boolXRayAtivado = false;
         boolFailed = false;
+        boolSucesso = false;
     }
     // Update is called once per frame
     void Update()
@@ -28,12 +29,18 @@ public class ObjectivesHandler : MonoBehaviour
         ToggleLight LightState = GameObject.FindGameObjectWithTag("XRay").GetComponent<ToggleLight>();
         boolXRayLight = LightState.XRayState();
 
+        if (ResetButton.action.WasPressedThisFrame())
+        {
+            SceneManager.LoadScene("MainScene");
+        }
+
         if (objColete.transform.position == new Vector3(1.6f, 1.3f, -4.75f))
         {
             boolColetePosicionado = true;
             TextoColete.text = "- <s>Entregue o colete ao paciente</s>";
         } else{
             boolColetePosicionado = false;
+            TextoColete.text = "- Entregue o colete ao paciente";
         }
         if (Physics.Raycast(XRay.transform.position, rayDirection, out RaycastHit hit, 100.0f, layersToHit))
         {
@@ -55,16 +62,16 @@ public class ObjectivesHandler : MonoBehaviour
         } else{
             boolXRayAtivado = false;
         }
-        if ((boolXRayLight && !(boolPlayerPosicionado)) || (boolXRayLight && !boolColetePosicionado) || (boolFailed))
+        if (((boolXRayAtivado && !(boolPlayerPosicionado)) || (boolXRayAtivado && !boolColetePosicionado) || (boolFailed)) && !boolSucesso)
         {
             boolFailed = true;
             FailedCanva.SetActive(true);
             HUDCanva.SetActive(false);
             BemvindoCanva.SetActive(false);
-
-            if (ResetButton.action.WasPressedThisFrame()){
-                SceneManager.LoadScene("SampleScene");
-            }
+        } else if ((boolXRayLight && boolColetePosicionado && boolPlayerPosicionado) || boolSucesso)
+        {
+            boolSucesso = true;
+            SucessoCanva.SetActive(true);
         }
     }
 }
